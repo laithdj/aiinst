@@ -47,9 +47,6 @@ app.use(session({
 // API Routes
 app.use('/api', apiRoutes);
 
-// Serve static files from frontend/dist if it exists
-app.use(express.static('frontend/dist', { fallthrough: true }));
-
 // Basic root route
 app.get('/', (_req, res) => {
     res.json({ message: 'Instagram AI Agent API is running', status: 'ok' });
