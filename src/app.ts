@@ -44,14 +44,16 @@ app.use(session({
   cookie: { maxAge: 2 * 60 * 60 * 1000, sameSite: 'lax' },
 }));
 
-// Serve static files from the 'public' directory
-app.use(express.static('frontend/dist'));
-
 // API Routes
 app.use('/api', apiRoutes);
 
+// Basic root route since no frontend is built
+app.get('/', (_req, res) => {
+    res.json({ message: 'Instagram AI Agent API is running', status: 'ok' });
+});
+
 app.get('*', (_req, res) => {
-    res.sendFile('index.html', { root: 'frontend/dist' });
+    res.status(404).json({ error: 'Route not found' });
 });
 
 /*
