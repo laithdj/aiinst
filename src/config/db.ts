@@ -3,12 +3,18 @@ import logger from './logger';
 
 export const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || '', {
+    const mongoUri = process.env.MONGODB_URI;
+    if (!mongoUri || mongoUri === '') {
+      logger.warn('MongoDB URI not provided. Skipping database connection.');
+      return;
+    }
+    
+    await mongoose.connect(mongoUri, {
       // These options are no longer necessary
     });
     logger.info('MongoDB connected');
   } catch (error) {
-    logger.error('MongoDB connection error:', error);
-    process.exit(1);
+    logger.warn('MongoDB connection failed. Application will continue without database:', error);
+    // Don't exit the process, just log the warning
   }
 };
